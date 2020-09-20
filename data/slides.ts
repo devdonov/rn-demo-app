@@ -1,3 +1,12 @@
+export type Slide = {
+  id: string
+  key: string
+  type: string
+  heading: string
+  description: string
+  color: string
+}
+
 export default [
   {
     id: "1",

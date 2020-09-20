@@ -1,8 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
 import * as React from 'react';
-import { StyleSheet, FlatList, Dimensions } from 'react-native';
+import { StyleSheet, FlatList, Dimensions, Animated } from 'react-native';
 import { Text, View } from '../components/Themed';
-import slides from '../data/slides';
+import slides, { Slide } from '../data/slides';
 
 const { width, height } = Dimensions.get('window');
 const LOGO_WIDTH = 240;
@@ -12,15 +12,32 @@ const DOT_SIZE = 40;
 type ItemProps = {
   heading: string
   description: string
+  index: number
+  scrollX: Animated.Value
 }
 
-const Item: React.FC<ItemProps> = ({ heading, description }) => {
+const Item: React.FC<ItemProps> = ({ heading, description, index, scrollX }) => {
+  const inputRange = [ (index - 1) * width, index * width, (index + 1) * width ];
+  const inputRangeOpacity = [ (index - 0.3) * width, index * width, (index + 0.3) * width ];
+  const scale = scrollX.interpolate({
+    inputRange,
+    outputRange: [0, 1, 0]
+  });
+  const opacity = scrollX.interpolate({
+    inputRange: inputRangeOpacity,
+    outputRange: [0, 1, 0]
+  });
+  const translateX = scrollX.interpolate({
+    inputRange,
+    outputRange: [-width * 0.2, 0, width * 0.2]
+  });
+
   return (
     <View style={styles.itemStyle}>
-      <View style={styles.textContainer}>
-        <Text style={styles.heading}>{heading}</Text>
-        <Text style={styles.description}>{description}</Text>
-      </View>
+      <Animated.View style={[styles.textContainer, { transform: [{ scale }] }]}>
+        <Animated.Text style={[ styles.heading, { transform: [{ translateX }] } ]}>{heading}</Animated.Text>
+        <Animated.Text style={[styles.description, { opacity }]}>{description}</Animated.Text>
+      </Animated.View>
     </View>
   )
 }
@@ -28,16 +45,24 @@ const Item: React.FC<ItemProps> = ({ heading, description }) => {
 const Pagination = () => <View style={styles.pagination} />
 
 export default function TabOneScreen() {
+  const scrollX = React.useRef(new Animated.Value(0)).current;
   return (
     <View style={styles.container}>
       <StatusBar style="auto" hidden />
-      <FlatList
+      <Animated.FlatList
         data={slides}
-        keyExtractor={item => item.key}
-        renderItem={({ item, index }) => <Item {...item} />}
+        keyExtractor={(item: Slide) => item.key}
+        renderItem={({ item, index }: { item: Slide, index: number }) => <Item {...item} index={index} scrollX={scrollX} />}
         pagingEnabled
         horizontal
         showsHorizontalScrollIndicator={false}
+        scrollEventThrottle={16}
+        onScroll={
+          Animated.event(
+            [{ nativeEvent: { contentOffset: {x: scrollX} } }],
+            { useNativeDriver: true }
+          )
+        }
       />
       <Pagination />
     </View>
@@ -64,20 +89,22 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     alignSelf: "flex-end",
     flex: 0.5,
-    backgroundColor: "#ccc"
+    // backgroundColor: "#ccc"
   },
   heading: {
     textTransform: "uppercase",
     fontWeight: "800",
     fontSize: 24,
     letterSpacing: 2,
-    marginBottom: 5
+    marginBottom: 5,
+    color: "#ccc"
   },
   description: {
     width: width * 0.75,
     marginRight: 10,
     fontSize: 16,
-    lineHeight: 16 * 1.5
+    lineHeight: 16 * 1.5,
+    color: "#fff"
   },
 
   pagination: {
