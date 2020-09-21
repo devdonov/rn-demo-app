@@ -14,7 +14,7 @@ export default [
     type: 'Some Type',
     heading: 'Some heading',
     description: "Lorem ipsum dolor sit amet.",
-    color: "#A0ECD0"
+    color: "#85BAA1"
   },
   {
     id: "2",
@@ -22,7 +22,7 @@ export default [
     type: 'Some Type 2',
     heading: 'Some heading 2',
     description: "Lorem ipsum dolor sit amet.",
-    color: "#A0ECD0"
+    color: "#544E61"
   },
   {
     id: "3",
@@ -30,6 +30,6 @@ export default [
     type: 'Some Type 3',
     heading: 'Some heading 3',
     description: "Lorem ipsum dolor sit amet.",
-    color: "#A0ECD0"
+    color: "#67597A"
   }
 ]

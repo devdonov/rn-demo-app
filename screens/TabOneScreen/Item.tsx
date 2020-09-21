@@ -1,13 +1,9 @@
-import { StatusBar } from 'expo-status-bar';
 import * as React from 'react';
-import { StyleSheet, FlatList, Dimensions, Animated } from 'react-native';
-import { Text, View } from '../components/Themed';
-import slides, { Slide } from '../data/slides';
+import { StyleSheet, Animated } from 'react-native';
+import { View } from '../../components/Themed';
+import layout from "../../constants/Layout";
 
-const { width, height } = Dimensions.get('window');
-const LOGO_WIDTH = 240;
-const LOGO_HEIGHT = 80;
-const DOT_SIZE = 40;
+const { width, height } = layout.window;
 
 type ItemProps = {
   heading: string
@@ -42,42 +38,15 @@ const Item: React.FC<ItemProps> = ({ heading, description, index, scrollX }) => 
   )
 }
 
-const Pagination = () => <View style={styles.pagination} />
-
-export default function TabOneScreen() {
-  const scrollX = React.useRef(new Animated.Value(0)).current;
-  return (
-    <View style={styles.container}>
-      <StatusBar style="auto" hidden />
-      <Animated.FlatList
-        data={slides}
-        keyExtractor={(item: Slide) => item.key}
-        renderItem={({ item, index }: { item: Slide, index: number }) => <Item {...item} index={index} scrollX={scrollX} />}
-        pagingEnabled
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        scrollEventThrottle={16}
-        onScroll={
-          Animated.event(
-            [{ nativeEvent: { contentOffset: {x: scrollX} } }],
-            { useNativeDriver: true }
-          )
-        }
-      />
-      <Pagination />
-    </View>
-  );
-}
+export default Item;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  },
   itemStyle: {
     width,
     height,
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    backgroundColor: "transparent"
   },
   // imageStyle: {
   //   width: width * 0.75,
@@ -105,15 +74,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 16 * 1.5,
     color: "#fff"
-  },
-
-  pagination: {
-    position: "absolute",
-    right: 40,
-    bottom: 35,
-    backgroundColor: "#fd130e",
-    flexDirection: "row",
-    height: DOT_SIZE,
-    width: 50
   }
 });
