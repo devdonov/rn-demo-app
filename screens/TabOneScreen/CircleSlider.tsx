@@ -31,11 +31,11 @@ const CircleSlider = ({ data, scrollX }: Props) => {
           });
           const opacity = scrollX.interpolate({
             inputRange,
-            outputRange: [ 0, 0.85, 0 ],
+            outputRange: [ 0, 0.5, 0 ],
           });
           return <Animated.View
             key={i.key}
-            style={[styles.circle, { backgroundColor: i.color, opacity, transform: [{ translateY }] }]}
+            style={[styles.circle, { backgroundColor: i.color, opacity, transform: [{ translateY }, { scale }] }]}
           />
         })}
     </View>
