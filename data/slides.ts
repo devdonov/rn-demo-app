@@ -30,6 +30,14 @@ export default [
     type: 'Some Type 3',
     heading: 'Some heading 3',
     description: "Lorem ipsum dolor sit amet.",
-    color: "#67597A"
-  }
+    color: "#D52941"
+  },
+  {
+    id: "4",
+    key: "four",
+    type: 'Some Type 4',
+    heading: 'Some heading 4',
+    description: "Lorem ipsum dolor sit amet.",
+    color: "#FCD581"
+  },
 ]
