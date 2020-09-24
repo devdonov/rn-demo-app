@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View } from 'react-native'
+import { Animated, StyleSheet, View } from 'react-native'
 import { EvilIcons } from '@expo/vector-icons'
 import { Poster } from '../../data/posters';
 import { Text } from '../../components/Themed';
@@ -7,15 +7,22 @@ import { LobsterText } from '../../components/StyledText';
 
 interface Props {
   data: Poster[]
+  animatedX: Animated.Value
+  index: number
 }
 
 const OVERFLOW_HEIGHT = 80;
 const OFFSET = 16;
 
-const OverflowItems = ({ data }: Props) => {
+const OverflowItems = ({ data, animatedX, index }: Props) => {
+  const inputRange = [-1, 0, 1]
+  const translateY = animatedX.interpolate({
+    inputRange,
+    outputRange: [OVERFLOW_HEIGHT, 0, -OVERFLOW_HEIGHT]
+  })
   return (
     <View style={styles.overflowContainer}>
-      <View>
+      <Animated.View style={{ transform: [{ translateY }] }}>
         {data.map((i, index) => {
           return (
             <View key={index} style={styles.itemContainer}>
@@ -30,7 +37,7 @@ const OverflowItems = ({ data }: Props) => {
             </View>
           )
         })}
-      </View>
+      </Animated.View>
     </View>
   )
 }
