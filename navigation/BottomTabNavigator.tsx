@@ -5,8 +5,7 @@ import * as React from 'react';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
-import TabOneScreen from '../screens/TabOneScreen';
-import TabTwoScreen from '../screens/TabTwoScreen';
+import { TabOneScreen, TabTwoScreen, TabSharedScreen } from '../screens';
 import { BottomTabParamList, TabOneParamList, TabTwoParamList } from '../types';
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
@@ -28,6 +27,13 @@ export default function BottomTabNavigator() {
       <BottomTab.Screen
         name="TabTwo"
         component={TabTwoNavigator}
+        options={{
+          tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
+        }}
+      />
+      <BottomTab.Screen
+        name="Shared"
+        component={TabSharedNavigator}
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
         }}
@@ -69,5 +75,19 @@ function TabTwoNavigator() {
         options={{ headerTitle: 'Tab Two Title' }}
       />
     </TabTwoStack.Navigator>
+  );
+}
+
+const TabSharedStack = createStackNavigator();
+
+function TabSharedNavigator() {
+  return (
+    <TabSharedStack.Navigator>
+      <TabSharedStack.Screen
+        name="TabSharedScreen"
+        component={TabSharedScreen}
+        options={{ headerTitle: 'Shared Screen' }}
+      />
+    </TabSharedStack.Navigator>
   );
 }
